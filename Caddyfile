@@ -1,0 +1,26 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:80} {
+	root * dist
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+	}
+
+	# Hashed build assets can be cached forever
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+
+	# index.html and logo must always revalidate
+	@html path / /index.html
+	header @html Cache-Control "no-cache"
+
+	try_files {path} /index.html
+	file_server
+}
