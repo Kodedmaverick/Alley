@@ -1,7 +1,7 @@
 # Nixpacks config for Dokploy: build with Vite, serve the static dist/ with Caddy.
-[phases.setup]
-nixPkgs = ["...", "caddy"]
-
+# NOTE: do not add "caddy" to nixPkgs here. Nixpacks already installs caddy for
+# Vite/SPA projects, and a second copy pulls in a second nixpkgs pin, which
+# fails with a caddy-api.service file conflict.
 [phases.install]
 cmds = ["npm ci"]
 
